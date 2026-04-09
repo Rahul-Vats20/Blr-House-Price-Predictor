@@ -51,10 +51,3 @@ If you wish to retrain the model, you can run the `model.py` script:
 python model.py
 ```
 This will regenerate `bangalore_home_prices_model.pickle` and `columns.json`.
-
-## 📝 GitHub Metadata Suggestions
-- **Description:** A Flask-based web application that predicts house prices in Bangalore using a Linear Regression model.
-- **Tags:** `machine-learning`, `flask`, `data-science`, `bangalore-house-price-prediction`, `python`, `linear-regression`, `scikit-learn`, `predictive-modeling`
-
----
-Developed by [Rahul Vats](https://github.com/Rahul-Vats20)
