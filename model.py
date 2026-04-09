@@ -13,7 +13,7 @@ import matplotlib
 matplotlib.rcParams["figure.figsize"] = (20,10)
 
 # importing the dataset
-dataset = pd.read_csv('..\dataset\Bengaluru_House_Data.csv')
+dataset = pd.read_csv('dataset/Bengaluru_House_Data.csv')
 print(dataset.head(10))
 print(dataset.shape)
 
@@ -150,7 +150,7 @@ def plot_scatter_chart(df,location):
     plt.ylabel('Price')
     plt.title(location)
     plt.legend()
-    plt.show()
+    # plt.show()
 
 plot_scatter_chart(dataset,"Hebbal")
 plot_scatter_chart(dataset,"Rajaji Nagar")
@@ -199,7 +199,7 @@ def plot_scatter_chart(df,location):
     plt.ylabel('Price')
     plt.title(location)
     plt.legend()
-    plt.show()
+    # plt.show()
 
 plot_scatter_chart(dataset,"Hebbal")
 plot_scatter_chart(dataset,"Rajaji Nagar")
@@ -273,7 +273,7 @@ def find_best_model_using_gridsearch(X,y):
     algos = {
         'linear_regression': {
             'model': LinearRegression(),
-            'params': { 'normalize': [True, False]}
+            'params': { 'copy_X': [True, False]}
             },
         'lasso': {
             'model': Lasso(),

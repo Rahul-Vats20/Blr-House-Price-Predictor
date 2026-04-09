@@ -9,16 +9,34 @@ app.config.update(
     dict(SECRET_KEY="powerful secretkey", WTF_CSRF_SECRET_KEY="a csrf secret key")
 )
 
-__locations = None
 __data_columns = None
-model = pickle.load(open("bangalore_home_prices_model.pickle","rb"))
+__locations = None
+model = None
+
+def load_saved_artifacts():
+    print("Loading the saved artifacts...start !")
+    global __data_columns
+    global __locations
+    global model
+
+    # Load Model
+    with open("bangalore_home_prices_model.pickle", "rb") as f:
+        model = pickle.load(f)
+
+    # Load Columns
+    with open("columns.json", "r") as f:
+        __data_columns = json.loads(f.read())["data_columns"]
+        __locations = __data_columns[3:] # first 3 are sqft, bath, bhk
+
+# Initialize artifacts immediately
+load_saved_artifacts()
 
 def get_estimated_price(input_json):
     try:
         loc_index = __data_columns.index(input_json['location'].lower())
     except:
         loc_index = -1
-    x = np.zeros(244)
+    x = np.zeros(len(__data_columns))
     x[0] = input_json['sqft']
     x[1] = input_json['bath']
     x[2] = input_json['bhk']
@@ -27,18 +45,9 @@ def get_estimated_price(input_json):
     result = round(model.predict([x])[0],2)
     return result
 
-def get_location_names():
-    return __locations
-
-def load_saved_artifacts():
-    print("Loading the saved artifacts...start !")
-    global __data_columns
-    global __locations
-    global model
-
-    with open("columns.json") as f:
-        __data_columns = json.loads(f.read())["data_columns"]
-        __locations = __data_columns[3:]
+@app.route("/get_location_names", methods=["GET"])
+def get_location_names_route():
+    return json.dumps({"locations": __locations})
 
 @app.route("/")
 def index():
@@ -67,5 +76,4 @@ def prediction():
 
 if __name__ == "__main__":
     print("Starting Python Flask Server")
-    load_saved_artifacts()
     app.run(debug=True)
